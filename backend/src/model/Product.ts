@@ -1,4 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
+import { Product } from '../services/types';
 
 const ProdutoSchema = new mongoose.Schema({
     name: String,
@@ -6,5 +7,5 @@ const ProdutoSchema = new mongoose.Schema({
     price: Number
 })
 
-export const ProdutoModel = mongoose.model('produto', ProdutoSchema, 'produto')
+export const ProdutoModel = mongoose.model<Product>('produto', ProdutoSchema, 'produto')
 

@@ -1,4 +1,5 @@
-import {ProdutoModel} from '../model/Produto'
+import {ProdutoModel} from '../model/Product'
+import { Product, ProductFind } from '../services/types';
 
 export const ProductRepository = {
     async create(product: any) {
@@ -6,30 +7,33 @@ export const ProductRepository = {
         return productCreated;
     },
 
-    async findList() {
-        const productFind = await ProdutoModel.find().sort({name: 'asc'})
-        return productFind;
+    async findAll(): Promise<Product[]> {
+        const productFinded = await ProdutoModel.find().sort({name: 'asc'})
+        return productFinded;
     },
     
-    async findByName(name: string) {
-        const productFind = await ProdutoModel.find({name: { $regex: '.*' + name + '.*' }}).sort({name: 'asc'})
-        return productFind;
+    async findByName(productFind: ProductFind): Promise<Product[]>{
+        const nameValue = productFind.name
+        const productFinded = await ProdutoModel.find({name: { $regex: '.*' + nameValue + '.*' }}).sort({name: 'asc'})
+        return productFinded;
     },
     
-    async findByType(type: string) {
-        const productFind = await ProdutoModel.find({type: type}).sort({name: 'asc'})
-        return productFind;
+    async findByType(productFind: ProductFind): Promise<Product[]> {
+        const typeValue = productFind.type
+        const productFinded = await ProdutoModel.find({type: typeValue}).sort({name: 'asc'})
+        return productFinded;
+    },
+
+    async findOneByID(id: string): Promise<Product | null> {
+        const productFinded = await ProdutoModel.findById(id)
+        return productFinded;
     },
     
-    async findByNameAndType(nameAndType: any) {
+    async findByNameAndType(nameAndType: ProductFind) {
         const {name, type} = nameAndType;
-        const productFind = await ProdutoModel.find({type: type, name: { $regex: '.*' + name + '.*' }}).sort({name: 'asc'})
-        return productFind;
+        const productFinded = await ProdutoModel.find({type: type, name: { $regex: '.*' + name + '.*' }}).sort({name: 'asc'})
+        return productFinded;
     },
-
-
-
-
 
     async delete(id: string) {
         await ProdutoModel.findOneAndDelete({_id: id})
