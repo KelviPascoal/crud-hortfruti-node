@@ -17,38 +17,52 @@ export const ProdutoController = {
     },
 
     async findList(request: Request, response: Response) {
-        const { name, type } = request.query
-        const productFind ={
-            name: String(name),
-            type: String(type)
-        }
-
+        const { name, type, page, limit } = request.query;
         if (name && type) {
-            const products = await ProductService.findByNameAndType(productFind)
-            response.status(200).json(products);
+            const items = await ProductService.findByNameAndType({
+                type: String(type),
+                name: String(name),
+                page: Number(page),
+                limit: Number(limit)
+            })
+            response.status(200).json(items);
             return;
         }
         if (!name && type) {
-            const products = await ProductService.findByType({type: String(type)})
-            response.status(200).json(products);
+            const items = await ProductService.findByType({
+                type: String(type),
+                page: Number(page),
+                limit: Number(limit)
+
+            })
+            response.status(200).json(items);
             return;
         }
-        if (name && !type) {            
-            const products = await ProductService.findByName({name: String(name)})
-            response.status(200).json(products);
+        if (name && !type) {
+            const items = await ProductService.findByName({
+                name: String(name),
+                page: Number(page),
+                limit: Number(limit)
+            })
+            response.status(200).json(items);
             return;
         }
-            const products = await ProductService.findAll()
-            response.status(200).json(products);
+        const items = await ProductService.findAll({
+            page: Number(page),
+            limit: Number(limit)
+        })
+        response.status(200).json(items);
     },
 
     async findOneById(request: Request, response: Response) {
 
-        const { id } = request.params
+        const id = request.params.id;
+        console.log('aaaaaaaaaaaaaaaaaaaaaaaa', id);
+        const productFinded = await ProductService.findOneById(id);
 
-        const products = await ProductService.findOneById(id)
+        console.log('productFinded', productFinded);
 
-        response.status(200).json(products);
+        response.status(200).json(productFinded);
     },
 
     async delete(request: Request, response: Response) {

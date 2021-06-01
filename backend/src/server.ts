@@ -1,7 +1,7 @@
-import express from 'express';
+import express, { ErrorRequestHandler, NextFunction, Request, Response } from 'express';
 import cors from 'cors'
 import { routes } from './routes';
-import mongoose from 'mongoose'
+import mongoose, { Error } from 'mongoose'
 
 const app = express();
 app.use(express.json())
@@ -13,6 +13,10 @@ mongoose.connect('mongodb://localhost/hortfruti-local', {
 })
 
 app.use(routes)
+// app.use((error: Error, request: Request, response: Response, next: NextFunction) => {
+//     response.status(error. || 500)
+// })
+
 
 app.listen("3333", () => {
     console.log("🐔 server is running");

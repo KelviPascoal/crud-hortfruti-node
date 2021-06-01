@@ -6,6 +6,7 @@ import { Container } from "./styles";
 
 interface Table extends TableHTMLAttributes<HTMLTableCaptionElement> {
     product: Product[];
+
 }
 
 interface Product {
@@ -15,18 +16,20 @@ interface Product {
     price: number;
 }
 
+interface ResponsePagenation {
+    totalItems: number;
+    items: Product[]
+}
+
 export function Table(props: Table) {
     const [products, setProducts ] = useState<Product[]>([])
+    
 
     useEffect(() => {
-        console.log(props);
         setProducts(props.product);
     }, [props])
 
     async function handleDelete(product: Product) {
-
-        console.log(product._id);
-        
         await api.delete('products/' + product._id)
             
     }
@@ -45,7 +48,7 @@ export function Table(props: Table) {
                 {products.map((product: Product) => <tr key={product._id}>
                     <td>{product.name}</td>
                     <td>{product.type}</td>
-                    <td>{product.price}</td>
+                    <td>Kg {product.price}</td>
                     <td><button onClick={() => handleDelete(product)}>X</button> <Link to={`/editar/${product._id}`}><button>...</button></Link></td>
                 </tr>)}
             </tbody>

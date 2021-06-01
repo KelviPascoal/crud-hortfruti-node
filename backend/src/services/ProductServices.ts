@@ -1,5 +1,5 @@
 import { ProductRepository } from "../repositories/ProductRepository";
-import { Product, ProductCreate, ProductFind, ProductUpdate } from "./types";
+import { Product, ProductCreate, ProductFind, ProductUpdate, ResponsePagenation } from "./types";
 
 export const ProductService = {
     async create(product: ProductCreate): Promise<Product> {
@@ -13,26 +13,27 @@ export const ProductService = {
 
     // async findList(product :ProductFind): Promise<Product[]> {
 
-    async findByName(productFind: ProductFind): Promise<Product[] | null> {
-        const productFinded = await ProductRepository.findByName(productFind);
-        return productFinded;
+    async findByName(productFind: ProductFind): Promise<ResponsePagenation> {
+        const items = await ProductRepository.findByName(productFind);
+        return items;
     },
-    async findByType(productFind: ProductFind): Promise<Product[]> {
-        const productFinded = await ProductRepository.findByType(productFind);
-        return productFinded;
+    async findByType(productFind: ProductFind): Promise<ResponsePagenation> {
+        const items = await ProductRepository.findByType(productFind);
+        return items;
     },
-    async findByNameAndType(productFind: ProductFind): Promise<Product[]> {
-        const productFinded = await ProductRepository.findByNameAndType(productFind);
-        return productFinded;
+    async findByNameAndType(productFind: ProductFind): Promise<ResponsePagenation> {
+        const items = await ProductRepository.findByNameAndType(productFind);
+        return items;
     },
-    async findAll(): Promise<Product[]> {
-        const productFind = await ProductRepository.findAll()
-        return productFind;
+    async findAll(productFind: ProductFind): Promise<ResponsePagenation> {
+        const items = await ProductRepository.findAll(productFind)
+        return items;
 },
 
     async findOneById(id: string): Promise<Product | null> {
-        const productFind = await ProductRepository.findOneByID(id)
-        return productFind;
+                
+        const productFinded = await ProductRepository.findOneByID(id)
+        return productFinded;
     },
 
         async delete (id: string) {
@@ -47,4 +48,7 @@ async update(product: ProductUpdate)  {
     const productUpdate = await ProductRepository.update(product);
     return productUpdate;
 },
+
+
+
 }

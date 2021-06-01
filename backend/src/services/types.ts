@@ -19,6 +19,13 @@ export interface ProductUpdate {
 }
 
 export interface ProductFind {
-    name?: string,
-    type?: string,
+    name?: string;
+    type?: string;
+    page: number;
+    limit: number;
+}
+
+export interface ResponsePagenation {
+    totalItems: number;
+    items: Product[];
 }
