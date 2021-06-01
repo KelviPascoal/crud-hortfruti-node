@@ -25,7 +25,7 @@ export interface ProductFind {
     limit: number;
 }
 
-export interface ResponsePagenation {
+export interface ResponsePagination {
     totalItems: number;
     items: Product[];
 }

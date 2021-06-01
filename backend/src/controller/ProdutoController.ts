@@ -58,11 +58,9 @@ export const ProdutoController = {
 
         const id = request.params.id;
         console.log('aaaaaaaaaaaaaaaaaaaaaaaa', id);
-        const productFinded = await ProductService.findOneById(id);
+        const productFound = await ProductService.findOneById(id);
 
-        console.log('productFinded', productFinded);
-
-        response.status(200).json(productFinded);
+        response.status(200).json(productFound);
     },
 
     async delete(request: Request, response: Response) {

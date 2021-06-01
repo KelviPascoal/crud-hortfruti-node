@@ -1,5 +1,5 @@
 import {ProdutoModel} from '../model/Product'
-import { ResponsePagenation, Product, ProductFind } from '../services/types';
+import { ResponsePagination, Product, ProductFind } from '../services/types';
 
 export const ProductRepository = {
     async create(product: any) {
@@ -7,61 +7,72 @@ export const ProductRepository = {
         return productCreated;
     },
 
-    async findAll(productFind: ProductFind): Promise<ResponsePagenation> {
+    async findAll(productFind: ProductFind): Promise<ResponsePagination> {
         const {limit, page} = productFind
         const offset = (page - 1) * limit;
         const count = await ProdutoModel.find().count()
-        const productFinded = await ProdutoModel.find().sort({name: 'asc'}).skip(offset).limit(limit);
-        const items: ResponsePagenation = {
+        const productFound = await ProdutoModel.find().sort({name: 'asc'}).skip(offset).limit(limit);
+        const items: ResponsePagination = {
             totalItems: count,
-            items: productFinded
+            items: productFound
         }
         return items;
     },
     
-    async findByName(productFind: ProductFind): Promise<ResponsePagenation>{
-        const {name, limit} = productFind
-        const offset = (productFind.page - 1) * limit;
-        const count = await ProdutoModel.find({name: { $regex: '.*' + name + '.*' }}).count()
-        const productFinded = await ProdutoModel.find({name: { $regex: '.*' + name + '.*' }})
-        .sort({name: 'asc'}).skip(offset).limit(limit);
+    async findByName(productFind: ProductFind): Promise<ResponsePagination>{
         
-        const items: ResponsePagenation = {
+        const {name, limit} = productFind
+        const test = "/"+name+"/i" ;
+        const offset = (productFind.page - 1) * limit;
+        const count = await ProdutoModel
+        .find({name: { $regex: new RegExp(name || "", 'i') }})
+        .count()
+        const productFound = await ProdutoModel
+        .find({name: { $regex: new RegExp(name || "", 'i') }})
+        .sort({name: 'asc'})
+        .skip(offset)
+        .limit(limit);
+        
+        const items: ResponsePagination = {
             totalItems: count,
-            items: productFinded
+            items: productFound
         }
         return items;
     },
     
-    async findByType(productFind: ProductFind): Promise<ResponsePagenation> {
+    async findByType(productFind: ProductFind): Promise<ResponsePagination> {
         const {type, limit, page} = productFind;
         const offset = (page - 1) * limit;
         const count = await ProdutoModel.find({type: type}).count()
-        const productFinded = await ProdutoModel.find({type: type})
+        const productFound = await ProdutoModel.find({type: type})
         .sort({name: 'asc'}).skip(offset).limit(limit);
-        const items: ResponsePagenation = {
+        const items: ResponsePagination = {
             totalItems: count,
-            items: productFinded
+            items: productFound
         }
         return items;
     },
 
-    async findByNameAndType(productFind: ProductFind): Promise<ResponsePagenation> {
+    async findByNameAndType(productFind: ProductFind): Promise<ResponsePagination> {
         const {name, type, page, limit} = productFind;
         const offset = (page - 1) * limit;
-        const count = await ProdutoModel.find({type: type, name: { $regex: '.*' + name + '.*' }}).count()
-        const productFinded = await ProdutoModel.find({type: type, name: { $regex: '.*' + name + '.*' }})
-        .sort({name: 'asc'}).skip(offset).limit(limit);
-        const items: ResponsePagenation = {
+        const count = await ProdutoModel
+        .find({type: type, name: { $regex: new RegExp(name || "", 'i') }})
+        .count()
+        const productFound = await ProdutoModel.find({type: type, name: { $regex: new RegExp(name || "", 'i') }})
+        .sort({name: 'asc'})
+        .skip(offset)
+        .limit(limit);
+        const items: ResponsePagination = {
             totalItems: count,
-            items: productFinded
+            items: productFound
         }
         return items;
     },
 
     async findOneByID(id: string): Promise<Product | null> {
-        const productFinded = await ProdutoModel.findOne({_id: id})
-        return productFinded;
+        const productFound = await ProdutoModel.findOne({_id: id})
+        return productFound;
     },
 
     async delete(id: string) {

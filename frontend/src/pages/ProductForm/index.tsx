@@ -34,23 +34,23 @@ export function ProductForm() {
         event.preventDefault()
         if (params.id) {
             if (!nameValue || !typeValue || !priceValue) {
-            alert('preencha todos os campos')
+                alert('preencha todos os campos')
+            }
+
+            const product = {
+                name: nameValue,
+                type: typeValue,
+                price: Number(priceValue)
+            }
+            console.log(product);
+
+            await api.put('products/' + params.id, product).then(response => {
+                console.log("asdasdasdsadsadsadassda" + response.data);
+            })
+            return
         }
 
-        const product = {
-            name: nameValue,
-            type: typeValue,
-            price: Number(priceValue)
-        }
-        console.log(product);
 
-        await api.put('products/' + params.id, product).then(response => {
-            console.log("asdasdasdsadsadsadassda" + response.data);
-        })
-        return
-    }
-
-        
         if (!nameValue || !typeValue || !priceValue) {
             alert('preencha todos os campos')
         }
@@ -81,9 +81,9 @@ export function ProductForm() {
                     onChange={(e) => setPriceValue(e.target.value)} />
 
                 <Button type="submit">Salvar</Button>
-                
+
             </form>
-            
+
         </>
     )
 }

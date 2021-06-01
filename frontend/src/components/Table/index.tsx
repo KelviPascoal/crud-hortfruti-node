@@ -3,10 +3,8 @@ import { Link } from "react-router-dom";
 import { api } from "../../services/api";
 import { Container } from "./styles";
 
-
 interface Table extends TableHTMLAttributes<HTMLTableCaptionElement> {
     product: Product[];
-
 }
 
 interface Product {
@@ -16,25 +14,23 @@ interface Product {
     price: number;
 }
 
-interface ResponsePagenation {
-    totalItems: number;
-    items: Product[]
-}
-
 export function Table(props: Table) {
-    const [products, setProducts ] = useState<Product[]>([])
-    
+    const [products, setProducts] = useState<Product[]>([])
+
 
     useEffect(() => {
         setProducts(props.product);
     }, [props])
 
     async function handleDelete(product: Product) {
+        const index = products.findIndex(p => p._id == product._id)
+        const productsUpdate = products.filter((product, i) => i !== index)
+        setProducts(productsUpdate);
+
         await api.delete('products/' + product._id)
-            
     }
-    
-    return(
+
+    return (
         <Container>
             <thead>
                 <tr>

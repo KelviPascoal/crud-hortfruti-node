@@ -1,5 +1,5 @@
 import { ProductRepository } from "../repositories/ProductRepository";
-import { Product, ProductCreate, ProductFind, ProductUpdate, ResponsePagenation } from "./types";
+import { Product, ProductCreate, ProductFind, ProductUpdate, ResponsePagination } from "./types";
 
 export const ProductService = {
     async create(product: ProductCreate): Promise<Product> {
@@ -13,27 +13,27 @@ export const ProductService = {
 
     // async findList(product :ProductFind): Promise<Product[]> {
 
-    async findByName(productFind: ProductFind): Promise<ResponsePagenation> {
+    async findByName(productFind: ProductFind): Promise<ResponsePagination> {
         const items = await ProductRepository.findByName(productFind);
         return items;
     },
-    async findByType(productFind: ProductFind): Promise<ResponsePagenation> {
+    async findByType(productFind: ProductFind): Promise<ResponsePagination> {
         const items = await ProductRepository.findByType(productFind);
         return items;
     },
-    async findByNameAndType(productFind: ProductFind): Promise<ResponsePagenation> {
+    async findByNameAndType(productFind: ProductFind): Promise<ResponsePagination> {
         const items = await ProductRepository.findByNameAndType(productFind);
         return items;
     },
-    async findAll(productFind: ProductFind): Promise<ResponsePagenation> {
+    async findAll(productFind: ProductFind): Promise<ResponsePagination> {
         const items = await ProductRepository.findAll(productFind)
         return items;
 },
 
     async findOneById(id: string): Promise<Product | null> {
                 
-        const productFinded = await ProductRepository.findOneByID(id)
-        return productFinded;
+        const productFound = await ProductRepository.findOneByID(id)
+        return productFound;
     },
 
         async delete (id: string) {
